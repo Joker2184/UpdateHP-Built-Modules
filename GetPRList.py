@@ -13,9 +13,17 @@ HEADERS = {
 
 def get_pull_requests() -> List[dict]:
     """获取GitHub的Pull Requests数据"""
-    response = requests.get(GITHUB_API_URL, headers=HEADERS)
-    response.raise_for_status()
-    return response.json()
+    try:
+        response = requests.get(GITHUB_API_URL, headers=HEADERS)
+        response.raise_for_status()  # 如果响应失败，会抛出异常
+        return response.json()
+    except requests.exceptions.HTTPError as err:
+        # 在捕获HTTP错误时输出详细的错误信息
+        print(f"HTTP error occurred: {err}")
+        print(f"Response Code: {response.status_code}")
+        print(f"Response Headers: {response.headers}")
+        print(f"Response Text: {response.text}")
+        raise  # Reraise the exception after logging
 
 def clean_text(text: str) -> str:
     """清理文本中的\r\n以及其他换行符"""
