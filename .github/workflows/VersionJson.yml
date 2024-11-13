@@ -1,0 +1,55 @@
+name: VersionJson
+
+on:
+  push:
+    branches:
+      - main  # 监听主分支上的推送
+
+jobs:
+  update-homepage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout UpdateHP-Built-Modules repository
+        uses: actions/checkout@v2
+        with:
+          repository: Joker2184/UpdateHP-Built-Modules
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: updatehp-built-modules
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Run Python script to generate content
+        run: |
+          python updatehp-built-modules/generate_content.py  # 执行生成内容的 Python 脚本
+
+      - name: Checkout UpdateHomepage repository
+        uses: actions/checkout@v2
+        with:
+          repository: Joker2184/UpdateHomepage
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: updatehomepage
+
+      - name: Delete old files from UpdateHomepage repository
+        run: |
+          rm -f updatehomepage/UpdateHomepage.xaml.ini
+          rm -f updatehomepage/UpdateHomepage.json
+        # 删除目标仓库中的旧文件（如果存在）
+
+      - name: Copy generated content to UpdateHomepage repository
+        run: |
+          cp -r updatehp-built-modules/generated/* updatehomepage/
+        # 将生成的文件复制到目标仓库
+
+      - name: Commit and push changes to UpdateHomepage repository
+        run: |
+          cd updatehomepage
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "Update homepage content"
+          git push origin main
+        # 提交并推送更新到目标仓库
