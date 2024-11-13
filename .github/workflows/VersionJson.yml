@@ -2,7 +2,7 @@ name: Update Homepage
 
 on:
   repository_dispatch:
-    types: [trigger-c-build]  # 监听来自 UpdateHomepage-Build 仓库的 trigger-c-build 事件
+    types: [trigger-d-build]  # 监听来自 UpdateHomepage-Build 仓库的 trigger-c-build 事件
 
 jobs:
   check-update-and-run:
