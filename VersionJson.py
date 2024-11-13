@@ -33,7 +33,7 @@ if __name__ == "__main__":
     url = "https://api.github.com/repos/Hex-Dragon/PCL2/releases"
     
     # 使用 GitHub Actions 的工作目录
-    save_path = os.path.join(os.getenv("GITHUB_WORKSPACE", ""), "generated")  # 保存路径位于工作目录下的 generated 文件夹
+    save_path = os.path.join(os.getenv("GITHUB_WORKSPACE", ""), "updatehomepage")  # 保存路径位于工作目录下的 updatehomepage 文件夹
     
     # 确保保存目录存在
     if not os.path.exists(save_path):
@@ -56,8 +56,4 @@ if __name__ == "__main__":
         print(f"成功创建 {json_file_name}，内容为: {{'Title': '{latest_version}'}}")
         
         # 创建 INI 文件
-        ini_file_name = create_ini_file(latest_version, build_time, github_time, save_path)
-        print(f"成功创建 {ini_file_name}，内容为:\n{open(ini_file_name).read()}")
-        
-    except Exception as e:
-        print(f"发生错误: {e}")
+        ini_file_name = create_ini
