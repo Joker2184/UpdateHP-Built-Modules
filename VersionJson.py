@@ -56,4 +56,8 @@ if __name__ == "__main__":
         print(f"成功创建 {json_file_name}，内容为: {{'Title': '{latest_version}'}}")
         
         # 创建 INI 文件
-        ini_file_name = create_ini
+        ini_file_name = create_ini_file(latest_version, build_time, github_time, save_path)
+        print(f"成功创建 {ini_file_name}，内容为:\n{open(ini_file_name).read()}")
+        
+    except Exception as e:
+        print(f"发生错误: {e}")
