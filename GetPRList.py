@@ -14,16 +14,29 @@ HEADERS = {
 def get_pull_requests() -> List[dict]:
     """获取GitHub的Pull Requests数据"""
     try:
+        print("Sending request to GitHub API...")
+        print(f"Request URL: {GITHUB_API_URL}")
+        print(f"Headers: {HEADERS}")
+
         response = requests.get(GITHUB_API_URL, headers=HEADERS)
-        response.raise_for_status()  # 如果响应失败，会抛出异常
+        
+        # Debugging: Output response status code and response body
+        print(f"Response Status Code: {response.status_code}")
+        print(f"Response Headers: {response.headers}")
+        
+        if response.status_code != 200:
+            print(f"Failed to fetch data: {response.status_code}")
+            print(f"Response body: {response.text}")  # Output response body for debugging
+            response.raise_for_status()  # Raise HTTPError for bad responses
+
         return response.json()
     except requests.exceptions.HTTPError as err:
-        # 在捕获HTTP错误时输出详细的错误信息
         print(f"HTTP error occurred: {err}")
-        print(f"Response Code: {response.status_code}")
-        print(f"Response Headers: {response.headers}")
-        print(f"Response Text: {response.text}")
-        raise  # Reraise the exception after logging
+        print(f"Response: {err.response.text}")
+        raise
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        raise
 
 def clean_text(text: str) -> str:
     """清理文本中的\r\n以及其他换行符"""
@@ -100,7 +113,12 @@ def save_to_xaml(content: str, filename: str):
 
 def main():
     # 获取GitHub的PR数据
-    prs = get_pull_requests()
+    try:
+        prs = get_pull_requests()
+        print("PR 数据获取成功")
+    except Exception as e:
+        print(f"获取 PR 数据失败: {e}")
+        return
 
     # 如果存在数据库文件，读取数据库；否则创建新的数据库
     pr_database_path = "UpdateHP-Built-Modules/PRDatabase.json"
