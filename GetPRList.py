@@ -4,11 +4,14 @@ import re
 import json
 from typing import List
 
-# GitHub API Token and Repository Info
-GITHUB_API_URL = "https://api.github.com/repos/Hex-Dragon/PCL2/pulls"
-HEADERS = {
-    "Authorization": f"Bearer {os.getenv('PAT_TOKEN')}",  # 使用环境变量
-    "Accept": "application/vnd.github.v3+json"
+PAT_TOKEN = os.getenv('PAT_TOKEN')  # 获取 PAT Token
+
+if not PAT_TOKEN:
+    raise ValueError("PAT_TOKEN environment variable not set.")
+
+headers = {
+    'Authorization': f'Bearer {PAT_TOKEN}',  # 使用 Bearer Token 认证
+    'Accept': 'application/vnd.github.v3+json'
 }
 
 def get_pull_requests() -> List[dict]:
