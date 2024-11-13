@@ -25,38 +25,19 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}  # 使用 PAT_TOKEN 进行授权
           path: updatehp-built-modules
 
-      # 3. 确保 UpdateHomepage 仓库下的生成内容文件夹存在
-      - name: Create generated directory if not exists
-        run: |
-          mkdir -p updatehomepage/generated
-
-      # 4. 运行 VersionJson.py 脚本生成内容
-      - name: Run VersionJson.py to generate content
-        run: |
-          python updatehp-built-modules/VersionJson.py  # 执行生成内容的 Python 脚本
-
-      # 5. 检查生成的文件是否存在，如果没有生成文件，则创建临时文件
-      - name: Create temporary generated files if not exists
-        run: |
-          if [ ! -d "updatehp-built-modules/generated" ]; then
-            mkdir -p updatehp-built-modules/generated
-          fi
-        # 如果没有生成目录，则临时创建一个，并放入一个临时文件
-
-      # 6. 删除 UpdateHomepage 仓库中已存在的旧文件
+      # 3. 删除 UpdateHomepage 仓库中已存在的旧文件
       - name: Delete old files from UpdateHomepage repository
         run: |
           rm -f updatehomepage/UpdateHomepage.xaml.ini
           rm -f updatehomepage/UpdateHomepage.json
         # 删除目标仓库中的旧文件（如果存在）
 
-      # 7. 将生成的文件复制到 UpdateHomepage 仓库
-      - name: Copy generated content to UpdateHomepage repository
+      # 4. 运行 VersionJson.py 脚本生成内容
+      - name: Run VersionJson.py to generate content
         run: |
-          cp -r updatehp-built-modules/generated/* updatehomepage/
-        # 将生成的文件复制到目标仓库
+          python updatehp-built-modules/VersionJson.py  # 执行生成内容的 Python 脚本
 
-      # 8. 提交并推送更新到 UpdateHomepage 仓库
+      # 5. 提交并推送更新到 UpdateHomepage 仓库
       - name: Commit and push changes to UpdateHomepage repository
         run: |
           cd updatehomepage
