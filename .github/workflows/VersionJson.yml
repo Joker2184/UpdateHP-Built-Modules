@@ -20,7 +20,7 @@ jobs:
       # 2. 运行 VersionJson.py 脚本生成内容
       - name: Run VersionJson.py to generate content
         run: |
-          python updatehomepage/VersionJson.py  # 执行生成内容的 Python 脚本
+          python VersionJson.py  # 执行生成内容的 Python 脚本
 
       # 3. 删除 UpdateHomepage 仓库中已存在的旧文件
       - name: Delete old files from UpdateHomepage repository
