@@ -33,7 +33,7 @@ if __name__ == "__main__":
     url = "https://api.github.com/repos/Hex-Dragon/PCL2/releases"
     
     # 使用 GitHub Actions 的工作目录
-    save_path = os.path.join(os.getenv("GITHUB_WORKSPACE", ""), "generated_files")  # 保存路径位于工作目录下的 generated_files 文件夹
+    save_path = os.path.join(os.getenv("GITHUB_WORKSPACE", ""), "generated")  # 保存路径位于工作目录下的 generated 文件夹
     
     # 确保保存目录存在
     if not os.path.exists(save_path):
