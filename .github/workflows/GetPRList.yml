@@ -1,0 +1,75 @@
+name: GetPRlist
+
+# 触发规则
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # 每 10 分钟触发一次
+  workflow_dispatch:  # 手动触发工作流
+
+jobs:
+  update_pr_list:
+    runs-on: ubuntu-latest  # 在 Ubuntu 环境下运行
+
+    steps:
+    # 1. Checkout UpdateHomepage-Build 仓库
+    - name: Checkout UpdateHomepage-Build repository
+      uses: actions/checkout@v2
+      with:
+        repository: Joker2184/UpdateHomepage-Build
+        path: UpdateHomepage-Build  # 将该仓库代码检出到子目录
+
+    # 2. Checkout UpdateHP-Built-Modules 仓库
+    - name: Checkout UpdateHP-Built-Modules repository
+      uses: actions/checkout@v2
+      with:
+        repository: Joker2184/UpdateHP-Built-Modules
+        path: UpdateHP-Built-Modules  # 将 UpdateHP-Built-Modules 仓库代码检出到子目录
+
+    # 3. 删除 UpdateHomepage-Build 仓库中的现有 PRList.xaml 文件
+    - name: Delete existing PRList.xaml in UpdateHomepage-Build
+      run: |
+        rm -f UpdateHomepage-Build/libraries/Homepage/PRList.xaml  # 删除文件
+
+    # 4. 删除 UpdateHP-Built-Modules 仓库中的现有 PRDatabase.json 文件
+    - name: Delete existing PRDatabase.json in UpdateHP-Built-Modules
+      run: |
+        rm -f UpdateHP-Built-Modules/PRDatabase.json  # 删除数据库文件
+
+    # 5. 安装 Python 环境和依赖
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # 设置 Python 版本
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests  # 安装 requests 库
+
+    # 6. 运行 Python 脚本生成新的 PRList.xaml 和 PRDatabase.json 文件
+    - name: Run Python script to generate PRList.xaml and PRDatabase.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # 使用 GitHub Token 作为环境变量
+      run: |
+        cd UpdateHP-Built-Modules  # 进入 Python 脚本所在的目录
+        python get_pr_list.py  # 运行 Python 脚本生成 PRList.xaml 和 PRDatabase.json 文件
+
+    # 7. 将新生成的 PRList.xaml 文件推送到 UpdateHomepage-Build 仓库
+    - name: Commit and push PRList.xaml to UpdateHomepage-Build
+      run: |
+        cd UpdateHomepage-Build  # 进入目标仓库目录
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add libraries/Homepage/PRList.xaml  # 将新的文件添加到 Git 中
+        git commit -m "Update PR list"  # 提交更新
+        git push  # 推送到仓库
+
+    # 8. 将更新后的 PRDatabase.json 推送回 UpdateHP-Built-Modules 仓库
+    - name: Commit and push PRDatabase.json to UpdateHP-Built-Modules
+      run: |
+        cd UpdateHP-Built-Modules  # 进入 UpdateHP-Built-Modules 仓库
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add PRDatabase.json  # 添加数据库文件
+        git commit -m "Update PR database"  # 提交更新
+        git push  # 推送到 UpdateHP-Built-Modules 仓库
