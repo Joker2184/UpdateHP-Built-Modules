@@ -58,8 +58,8 @@ jobs:
     - name: Commit and push PRList.xaml to UpdateHomepage-Build
       run: |
         cd UpdateHomepage-Build  # 进入目标仓库目录
-        git config user.name "GitHub Actions"  # 配置 Git 用户名
-        git config user.email "actions@github.com"  # 配置 Git 用户邮箱
+        git config user.name "Joker2184Bot"  # 配置 Git 用户名
+        git config user.email "Joker2184@outlook.com"  # 配置 Git 用户邮箱
         git add libraries/Homepage/PRList.xaml  # 添加新的文件
         git commit -m "Update PR list"  # 提交更新
         git push https://github.com/Joker2184/UpdateHomepage-Build.git HEAD:main  # 推送到目标仓库的 main 分支
@@ -68,8 +68,8 @@ jobs:
     - name: Commit and push PRDatabase.json to UpdateHP-Built-Modules
       run: |
         cd UpdateHP-Built-Modules  # 进入目标仓库目录
-        git config user.name "GitHub Actions"  # 配置 Git 用户名
-        git config user.email "actions@github.com"  # 配置 Git 用户邮箱
+        git config user.name "Joker2184Bot"  # 配置 Git 用户名
+        git config user.email "Joker2184@outlook.com"  # 配置 Git 用户邮箱
         git add PRDatabase.json  # 添加数据库文件
         git commit -m "Update PR database"  # 提交更新
         git push https://github.com/Joker2184/UpdateHP-Built-Modules.git HEAD:main
