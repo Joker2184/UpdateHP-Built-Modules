@@ -70,14 +70,20 @@ jobs:
     - name: Copy PRList.xaml to UpdateHomepage-Build
       run: |
         cp ./UpdateHP-Built-Modules/libraries/Homepage/PRList.xaml ./UpdateHomepage-Build/libraries/Homepage/  # 复制文件
-        
+
+    # 10. 复制生成的 PRDatabase.json 文件到 UpdateHP-Built-Modules
+    - name: Copy PRDatabase.json to UpdateHP-Built-Modules
+      run: |
+        # 这里不需要复制文件，因为文件已经在相同的目录中生成
+        echo "PRDatabase.json already in the correct directory, no copy needed"
+
     # 11. 设置 git 用户凭证
     - name: Set up git user credentials
       run: |
         git config --global user.name "Joker2184Bot"
         git config --global user.email "Joker2184@outlook.com"
         git config --global credential.helper store
-        echo "https://${{ secrets.PAT2_TOKEN }}:@github.com" > ~/.git-credentials
+        echo "https://${{ secrets.GITHUB_TOKEN }}:@github.com" > ~/.git-credentials
 
     # 12. 将新生成的 PRList.xaml 文件推送到 UpdateHomepage-Build 仓库
     - name: Commit and push PRList.xaml to UpdateHomepage-Build
@@ -85,7 +91,7 @@ jobs:
         cd UpdateHomepage-Build  # 进入目标仓库目录
         git add libraries/Homepage/PRList.xaml  # 添加新的文件
         git commit -m "Update PR list"  # 提交更新
-        git push https://github.com/Joker2184/UpdateHomepage-Build.git HEAD:main  # 推送到目标仓库的 main 分支
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Joker2184/UpdateHomepage-Build.git HEAD:main  # 推送到目标仓库的 main 分支
 
     # 13. 将更新后的 PRDatabase.json 推送回 UpdateHP-Built-Modules 仓库
     - name: Commit and push PRDatabase.json to UpdateHP-Built-Modules
@@ -93,4 +99,4 @@ jobs:
         cd UpdateHP-Built-Modules  # 进入目标仓库目录
         git add PRDatabase.json  # 添加数据库文件
         git commit -m "Update PR database"  # 提交更新
-        git push https://github.com/Joker2184/UpdateHP-Built-Modules.git HEAD:main  # 推送到目标仓库的 main 分支
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Joker2184/UpdateHP-Built-Modules.git HEAD:main  # 推送到目标仓库的 main 分支
