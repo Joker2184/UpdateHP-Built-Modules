@@ -25,17 +25,29 @@ jobs:
         repository: Joker2184/UpdateHP-Built-Modules
         path: UpdateHP-Built-Modules  # 将 UpdateHP-Built-Modules 仓库代码检出到子目录
 
-    # 3. 删除 UpdateHomepage-Build 仓库中的现有 PRList.xaml 文件
+    # 3. 拉取更新的代码 (避免冲突)
+    - name: Pull latest changes from UpdateHomepage-Build
+      run: |
+        cd UpdateHomepage-Build
+        git pull origin main  # 拉取最新的主分支代码
+
+    # 4. 拉取更新的代码 (避免冲突)
+    - name: Pull latest changes from UpdateHP-Built-Modules
+      run: |
+        cd UpdateHP-Built-Modules
+        git pull origin main  # 拉取最新的主分支代码
+
+    # 5. 删除 UpdateHomepage-Build 仓库中的现有 PRList.xaml 文件
     - name: Delete existing PRList.xaml in UpdateHomepage-Build
       run: |
         rm -f UpdateHomepage-Build/libraries/Homepage/PRList.xaml  # 删除文件
 
-    # 4. 删除 UpdateHP-Built-Modules 仓库中的现有 PRDatabase.json 文件
+    # 6. 删除 UpdateHP-Built-Modules 仓库中的现有 PRDatabase.json 文件
     - name: Delete existing PRDatabase.json in UpdateHP-Built-Modules
       run: |
         rm -f UpdateHP-Built-Modules/PRDatabase.json  # 删除数据库文件
 
-    # 5. 安装 Python 环境和依赖
+    # 7. 安装 Python 环境和依赖
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -46,7 +58,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests  # 安装 requests 库
 
-    # 6. 运行 Python 脚本生成新的 PRList.xaml 和 PRDatabase.json 文件
+    # 8. 运行 Python 脚本生成新的 PRList.xaml 和 PRDatabase.json 文件
     - name: Run Python script to generate PRList.xaml and PRDatabase.json
       env:
          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}  # 使用 GitHub Token 作为环境变量
@@ -54,7 +66,17 @@ jobs:
         cd UpdateHP-Built-Modules  # 进入 Python 脚本所在的目录
         python GetPRList.py  # 运行 Python 脚本生成 PRList.xaml 和 PRDatabase.json 文件
 
-    # 7. 将新生成的 PRList.xaml 文件推送到 UpdateHomepage-Build 仓库
+    # 9. 复制生成的 PRList.xaml 文件到 UpdateHomepage-Build
+    - name: Copy PRList.xaml to UpdateHomepage-Build
+      run: |
+        cp UpdateHP-Built-Modules/libraries/Homepage/PRList.xaml UpdateHomepage-Build/libraries/Homepage/  # 复制文件
+
+    # 10. 复制生成的 PRDatabase.json 文件到 UpdateHP-Built-Modules
+    - name: Copy PRDatabase.json to UpdateHP-Built-Modules
+      run: |
+        cp UpdateHP-Built-Modules/PRDatabase.json UpdateHomepage-Build/PRDatabase.json  # 复制文件
+
+    # 11. 将新生成的 PRList.xaml 文件推送到 UpdateHomepage-Build 仓库
     - name: Commit and push PRList.xaml to UpdateHomepage-Build
       run: |
         cd UpdateHomepage-Build  # 进入目标仓库目录
@@ -64,7 +86,7 @@ jobs:
         git commit -m "Update PR list"  # 提交更新
         git push https://github.com/Joker2184/UpdateHomepage-Build.git HEAD:main  # 推送到目标仓库的 main 分支
 
-    # 8. 将更新后的 PRDatabase.json 推送回 UpdateHP-Built-Modules 仓库
+    # 12. 将更新后的 PRDatabase.json 推送回 UpdateHP-Built-Modules 仓库
     - name: Commit and push PRDatabase.json to UpdateHP-Built-Modules
       run: |
         cd UpdateHP-Built-Modules  # 进入目标仓库目录
@@ -72,5 +94,4 @@ jobs:
         git config user.email "Joker2184@outlook.com"  # 配置 Git 用户邮箱
         git add PRDatabase.json  # 添加数据库文件
         git commit -m "Update PR database"  # 提交更新
-        git push https://github.com/Joker2184/UpdateHP-Built-Modules.git HEAD:main
-
+        git push https://github.com/Joker2184/UpdateHP-Built-Modules.git HEAD:main  # 推送到目标仓库的 main 分支
