@@ -130,5 +130,5 @@ pr_data = get_pull_requests()
 
 # 保存到GitHub工作区的指定路径
 save_to_json(pr_data, "./UpdateHP-Built-Modules/PRDatabase.json")
-save_to_xaml(generate_template(pr_data[0]), "./UpdateHomepage-Build/libraries/Homepage/PRList.xaml")
+save_to_xaml(generate_template(pr_data[0]), "./UpdateHP-Built-Modules/libraries/Homepage/PRList.xaml")
 
