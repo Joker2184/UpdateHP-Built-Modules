@@ -1,47 +1,47 @@
 name: GetPRlist
 
 permissions:
-  contents: write  # 添加写权限
+  contents: write  # 给 actions 提供写入权限
 
 on:
   schedule:
     - cron: "*/10 * * * *"  # 每 10 分钟触发一次
-  workflow_dispatch:
+  workflow_dispatch:  # 手动触发工作流
 
 jobs:
   update_pr_list:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # 在 Ubuntu 环境下运行
 
     steps:
     - name: Checkout UpdateHomepage-Build repository
       uses: actions/checkout@v2
       with:
         repository: Joker2184/UpdateHomepage-Build
-        path: UpdateHomepage-Build
+        path: UpdateHomepage-Build  # 将该仓库代码检出到子目录
 
     - name: Checkout UpdateHP-Built-Modules repository
       uses: actions/checkout@v2
       with:
         repository: Joker2184/UpdateHP-Built-Modules
-        path: UpdateHP-Built-Modules
+        path: UpdateHP-Built-Modules  # 将 UpdateHP-Built-Modules 仓库代码检出到子目录
 
     - name: Pull latest changes from UpdateHomepage-Build
       run: |
         cd UpdateHomepage-Build
-        git pull origin main
+        git pull origin main  # 拉取最新的主分支代码
 
     - name: Pull latest changes from UpdateHP-Built-Modules
       run: |
         cd UpdateHP-Built-Modules
-        git pull origin main
+        git pull origin main  # 拉取最新的主分支代码
 
     - name: Delete existing PRList.xaml in UpdateHomepage-Build
       run: |
-        rm -f UpdateHomepage-Build/libraries/Homepage/PRList.xaml
+        rm -f UpdateHomepage-Build/libraries/Homepage/PRList.xaml  # 删除文件
 
     - name: Delete existing PRDatabase.json in UpdateHP-Built-Modules
       run: |
-        rm -f UpdateHP-Built-Modules/PRDatabase.json
+        rm -f UpdateHP-Built-Modules/PRDatabase.json  # 删除数据库文件
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -51,22 +51,22 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests
+        pip install requests  # 安装 requests 库
 
     - name: Run Python script to generate PRList.xaml and PRDatabase.json
       env:
-        PAT_TOKEN: ${{ secrets.PAT2_TOKEN }}
+        PAT_TOKEN: ${{ secrets.PAT2_TOKEN }}  # 使用 GitHub Token 作为环境变量
       run: |
         cd UpdateHP-Built-Modules
-        python GetPRList.py
+        python GetPRList.py  # 运行 Python 脚本生成 PRList.xaml 和 PRDatabase.json 文件
 
     - name: Copy PRList.xaml to UpdateHomepage-Build
       run: |
-        cp ./UpdateHP-Built-Modules/libraries/Homepage/PRList.xaml ./UpdateHomepage-Build/libraries/Homepage/
+        cp ./UpdateHP-Built-Modules/libraries/Homepage/PRList.xaml ./UpdateHomepage-Build/libraries/Homepage/  # 复制文件
 
     - name: Set up git user credentials
       env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # 使用 PAT Token
       run: |
         git config --global user.name "Joker2184Bot"
         git config --global user.email "Joker2184@outlook.com"
@@ -75,16 +75,16 @@ jobs:
 
     - name: Commit and push PRList.xaml to UpdateHomepage-Build
       env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # 使用 PAT Token
       run: |
         cd UpdateHomepage-Build
         git add libraries/Homepage/PRList.xaml
         git commit -m "Update PR list"
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Joker2184/UpdateHomepage-Build.git HEAD:main
+        git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Joker2184/UpdateHomepage-Build.git HEAD:main
 
     - name: Commit and push PRDatabase.json to UpdateHP-Built-Modules
       env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # 使用 PAT Token
       run: |
         cd UpdateHP-Built-Modules
         git add PRDatabase.json
