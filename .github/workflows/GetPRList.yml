@@ -72,5 +72,5 @@ jobs:
         git config user.email "actions@github.com"  # 配置 Git 用户邮箱
         git add PRDatabase.json  # 添加数据库文件
         git commit -m "Update PR database"  # 提交更新
-        git push https://github.com/Joker2184/UpdateHP-Build-Modules.git HEAD:main
+        git push https://github.com/Joker2184/UpdateHP-Built-Modules.git HEAD:main
 
