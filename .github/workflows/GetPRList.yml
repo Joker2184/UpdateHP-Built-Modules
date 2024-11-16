@@ -27,15 +27,19 @@ jobs:
 
     # 3. 拉取更新的代码 (避免冲突)
     - name: Pull latest changes from UpdateHomepage-Build
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GITHUB_TOKEN 环境变量
       run: |
         cd UpdateHomepage-Build
-        git pull origin main  # 拉取最新的主分支代码
+        git pull https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Joker2184/UpdateHomepage-Build.git main  # 拉取最新的主分支代码
 
     # 4. 拉取更新的代码 (避免冲突)
     - name: Pull latest changes from UpdateHP-Built-Modules
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GITHUB_TOKEN 环境变量
       run: |
         cd UpdateHP-Built-Modules
-        git pull origin main  # 拉取最新的主分支代码
+        git pull https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Joker2184/UpdateHP-Built-Modules.git main  # 拉取最新的主分支代码
 
     # 5. 删除 UpdateHomepage-Build 仓库中的现有 PRList.xaml 文件
     - name: Delete existing PRList.xaml in UpdateHomepage-Build
@@ -87,6 +91,8 @@ jobs:
 
     # 12. 将新生成的 PRList.xaml 文件推送到 UpdateHomepage-Build 仓库
     - name: Commit and push PRList.xaml to UpdateHomepage-Build
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 设置环境变量
       run: |
         cd UpdateHomepage-Build  # 进入目标仓库目录
         git add libraries/Homepage/PRList.xaml  # 添加新的文件
@@ -95,6 +101,8 @@ jobs:
 
     # 13. 将更新后的 PRDatabase.json 推送回 UpdateHP-Built-Modules 仓库
     - name: Commit and push PRDatabase.json to UpdateHP-Built-Modules
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 设置环境变量
       run: |
         cd UpdateHP-Built-Modules  # 进入目标仓库目录
         git add PRDatabase.json  # 添加数据库文件
