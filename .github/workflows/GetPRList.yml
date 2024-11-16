@@ -70,7 +70,7 @@ jobs:
         git config user.email "Joker2184@outlook.com"
         git add libraries/Homepage/PRList.xaml
         git commit -m "Update PRList.xaml"
-        git push https://PAT2_TOKEN@github.com/Joker2184/UpdateHomepage-Build.git HEAD:main
+        git push https://${{ secrets.PAT2_TOKEN }}@github.com/Joker2184/UpdateHomepage-Build.git HEAD:main
 
     # 8. 将新文件推送到 UpdateHP-Built-Modules 仓库
     - name: Commit and push PRDatabase.json to UpdateHP-Built-Modules
@@ -80,4 +80,4 @@ jobs:
         git config user.email "Joker2184@outlook.com"
         git add PRDatabase.json
         git commit -m "Update PRDatabase.json"
-        git push https://PAT2_TOKEN@github.com/Joker2184/UpdateHP-Built-Modules.git HEAD:main
+        git push https://${{ secrets.PAT2_TOKEN }}@github.com/Joker2184/UpdateHP-Built-Modules.git HEAD:main
