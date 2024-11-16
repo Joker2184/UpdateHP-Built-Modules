@@ -127,5 +127,8 @@ def save_to_xaml(content: str, filename: str):
 
 # 获取PR数据并生成文件
 pr_data = get_pull_requests()
-save_to_json(pr_data, "H:/UpdateHP-Built-Modules/PRDatabase.json")
-save_to_xaml(generate_template(pr_data[0]), "H:/UpdateHomepage-Build/libraries/Homepage/PRList.xaml")
+
+# 保存到GitHub工作区的指定路径
+save_to_json(pr_data, "./UpdateHP-Built-Modules/PRDatabase.json")
+save_to_xaml(generate_template(pr_data[0]), "./UpdateHomepage-Build/libraries/Homepage/PRList.xaml")
+
