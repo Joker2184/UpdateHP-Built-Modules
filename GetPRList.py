@@ -129,6 +129,6 @@ def save_to_xaml(content: str, filename: str):
 pr_data = get_pull_requests()
 
 # 保存到GitHub工作区的指定路径
-save_to_json(pr_data, "./UpdateHP-Built-Modules/PRDatabase.json")
-save_to_xaml(generate_template(pr_data[0]), "./UpdateHP-Built-Modules/libraries/Homepage/PRList.xaml")
+save_to_json(pr_data, "${GITHUB_WORKSPACE}/UpdateHP-Built-Modules/PRDatabase.json")
+save_to_xaml(generate_template(pr_data[0]), "${GITHUB_WORKSPACE}/UpdateHP-Built-Modules/libraries/Homepage/PRList.xaml")
 
