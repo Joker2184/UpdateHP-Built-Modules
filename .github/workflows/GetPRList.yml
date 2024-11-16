@@ -68,6 +68,7 @@ jobs:
         cd UpdateHomepage-Build
         git config user.name "Joker2184Bot"
         git config user.email "Joker2184@outlook.com"
+        git remote set-url origin https://$GITHUB_ACTOR:${{ secrets.PAT_TOKEN }}@github.com/Joker2184/UpdateHomepage-Build.git
         git add libraries/Homepage/PRList.xaml
         git commit -m "Update PRList.xaml"
         git push https://${{ secrets.PAT2_TOKEN }}@github.com/Joker2184/UpdateHomepage-Build.git HEAD:main
@@ -78,6 +79,7 @@ jobs:
         cd UpdateHP-Built-Modules
         git config user.name "Joker2184Bot"
         git config user.email "Joker2184@outlook.com"
+        git remote set-url origin https://$GITHUB_ACTOR:${{ secrets.PAT_TOKEN }}@github.com/Joker2184/UpdateHP-Built-Modules.git
         git add PRDatabase.json
         git commit -m "Update PRDatabase.json"
         git push https://${{ secrets.PAT2_TOKEN }}@github.com/Joker2184/UpdateHP-Built-Modules.git HEAD:main
