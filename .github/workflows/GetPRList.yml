@@ -69,12 +69,12 @@ jobs:
     # 9. 复制生成的 PRList.xaml 文件到 UpdateHomepage-Build
     - name: Copy PRList.xaml to UpdateHomepage-Build
       run: |
-        cp ${GITHUB_WORKSPACE}/UpdateHP-Built-Modules/libraries/Homepage/PRList.xaml ${GITHUB_WORKSPACE}/UpdateHomepage-Build/libraries/Homepage/  # 复制文件
+        cp ./UpdateHP-Built-Modules/libraries/Homepage/PRList.xaml ./UpdateHomepage-Build/libraries/Homepage/  # 复制文件
 
     # 10. 复制生成的 PRDatabase.json 文件到 UpdateHP-Built-Modules
     - name: Copy PRDatabase.json to UpdateHP-Built-Modules
       run: |
-        cp ${GITHUB_WORKSPACE}/UpdateHP-Built-Modules/PRDatabase.json ${GITHUB_WORKSPACE}/UpdateHP-Built-Modules  # 复制文件
+        cp ./UpdateHP-Built-Modules/PRDatabase.json ./UpdateHP-Built-Modules  # 复制文件
 
     # 11. 将新生成的 PRList.xaml 文件推送到 UpdateHomepage-Build 仓库
     - name: Commit and push PRList.xaml to UpdateHomepage-Build
