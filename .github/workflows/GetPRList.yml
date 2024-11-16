@@ -66,16 +66,16 @@ jobs:
 
     - name: Set up git user credentials
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
         git config --global user.name "Joker2184Bot"
         git config --global user.email "Joker2184@outlook.com"
         git config --global credential.helper store
-        echo "https://${{ secrets.GITHUB_TOKEN }}:@github.com" > ~/.git-credentials
+        echo "https://${{ secrets.PAT_TOKEN }}:@github.com" > ~/.git-credentials
 
     - name: Commit and push PRList.xaml to UpdateHomepage-Build
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
         cd UpdateHomepage-Build
         git add libraries/Homepage/PRList.xaml
@@ -84,9 +84,9 @@ jobs:
 
     - name: Commit and push PRDatabase.json to UpdateHP-Built-Modules
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
         cd UpdateHP-Built-Modules
         git add PRDatabase.json
         git commit -m "Update PR database"
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Joker2184/UpdateHP-Built-Modules.git HEAD:main
+        git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Joker2184/UpdateHP-Built-Modules.git HEAD:main
