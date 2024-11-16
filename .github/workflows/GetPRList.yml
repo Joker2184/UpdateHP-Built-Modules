@@ -74,7 +74,8 @@ jobs:
     # 10. 复制生成的 PRDatabase.json 文件到 UpdateHP-Built-Modules
     - name: Copy PRDatabase.json to UpdateHP-Built-Modules
       run: |
-        cp ./UpdateHP-Built-Modules/PRDatabase.json ./UpdateHP-Built-Modules  # 复制文件
+    # 这里不需要复制文件，因为文件已经在相同的目录中生成
+    echo "PRDatabase.json already in the correct directory, no copy needed"
 
     # 11. 设置 git 用户凭证
     - name: Set up git user credentials
