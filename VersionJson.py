@@ -1,7 +1,18 @@
+import random
 import requests
 import json
 import os
 from datetime import datetime
+
+# 添加硬编码的字典或列表，模拟随机选择的文本
+cave_messages = [
+    "ltcatt add "拒绝/放弃",
+    "非常抱歉把本樱坑了...这告诉我们不要在群内坑新人.....EW来的快去的也快",
+    "信标 巨巨.jpg",
+    "在24/11/10 更新日志由龙猫改成了新闻速报",
+    "Exploration of this cave is ongoing.",
+    "A hidden treasure lies within the cave."
+]
 
 def get_latest_version(url):
     response = requests.get(url)
@@ -22,9 +33,13 @@ def create_json_file(version, save_path):
     return filename
 
 def create_ini_file(version, build_time, github_time, save_path):
-    # 格式化为所需内容
-    ini_data = f"PCL Version: {version}\nHomepage Version: {version}\nBuilder Time: {build_time}\nUpdate Time: {github_time}"
+    # 随机选择一个{Cave}的内容
+    cave_message = random.choice(cave_messages)
+    
+    # 格式化为所需内容，增加Cave字段
+    ini_data = f"PCL Version: {version}\nHomepage Version: {version}\nBuilder Time: {build_time}\nUpdate Time: {github_time}\nCave: {cave_message}"
     ini_filename = os.path.join(save_path, "UpdateHomepage.xaml.ini")  # 指定保存路径
+    
     with open(ini_filename, 'w') as ini_file:
         ini_file.write(ini_data)  # 写入没有空行的格式
     return ini_filename
