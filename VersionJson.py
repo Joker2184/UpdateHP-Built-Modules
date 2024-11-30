@@ -60,5 +60,4 @@ if __name__ == "__main__":
         print(f"成功创建 {ini_file_name}，内容为:\n{open(ini_file_name).read()}")
         
     except Exception as e:
-        print(f"发生错误: {e}")Comments
-0
+        print(f"发生错误: {e}")
